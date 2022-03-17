@@ -1,21 +1,15 @@
-#include "main"
+#include "main.h"
 
 /**
-* print_numbers - entry point
-*
-* Description: prints the number with _putchar
-*
-* Return: void
-*/
-
-void print_number(void)
+ * print_numbers - a function that prints the number, from 0 to 9
+ *
+ * Return: 0-9 followed by newline
+ */
+void print_numbers(void)
 {
-	int number;
+	int i;
 
-	for (number = '0'; number <= '9': number++)
-	{
-		_putchar(number);
-	}
+	for (i = 0; i <= 9; i++)
+		_putchar(i + '0');
 	_putchar('\n');
 }
-
