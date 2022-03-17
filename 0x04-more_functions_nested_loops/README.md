@@ -1,1 +1,1 @@
-My 0x04-more_function_nested_loops task
+My 0x04-more_functions_loops_task 
