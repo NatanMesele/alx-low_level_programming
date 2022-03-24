@@ -1,104 +1,78 @@
 #include "main.h"
 
 /**
- * _strlen - returns the length of a string
- * @s: string s
- * Return: length of string
+ * rev_string - reverse array
+ * @n: integer params
+ * Return: 0
  */
-int _strlen(char *s)
-{
-	char *p = s;
 
-	while (*s)
-		s++;
-	return (s - p);
-}
-
-/**
- * rev_string - reverses a string
- * @s: string s
- */
-void rev_string(char *s)
+void rev_string(char *n)
 {
 	int i = 0;
-	int size = _strlen(s);
+	int j = 0;
 	char temp;
 
-	while (i < size)
+	while (*(n + i) != '\0')
 	{
-		temp = *(s + i);
-		*(s + i) = *(s + size - 1);
-		*(s + size - 1) = temp;
 		i++;
-		size--;
+	}
+	i--;
+
+	for (j = 0; j < i; j++, i--)
+	{
+		temp = *(n + j);
+		*(n + j) = *(n + i);
+		*(n + i) = temp;
 	}
 }
 
 /**
- * returnRes - changes pretotal to digit to be added
- * @sum: pre-total
- * @plusOne: flag to add one to res
- * Return: returns digit to be placed into array
+ * infinite_add - add 2 numbers together
+ * @n1: text representation of 1st number to add
+ * @n2: text representation of 2nd number to add
+ * @r: pointer to buffer
+ * @size_r: buffer size
+ * Return: pointer to calling function
  */
-int returnRes(int sum, int plusOne)
-{
-	int res;
 
-	if (sum == 9 && plusOne)
-		res = 0;
-	else if ((sum >= 10 && plusOne) || (sum < 9 && plusOne))
-		res = (sum % 10) + 1;
-	else
-		res = sum % 10;
-	return (res);
-}
-
-/**
- * returnPlusOne - determines bool of plusOne
- * @sum: pre-total
- * @plusOne: flag to add one to res
- * Return: 1 if true, 0 if false
- */
-int returnPlusOne(int sum, int plusOne)
-{
-	if (sum > 9)
-		plusOne = 1;
-	else if (sum == 9 && plusOne)
-		plusOne = 1;
-	else
-		plusOne = 0;
-	return (plusOne);
-}
-
-/**
- * infinite_add - function that adds two numbers
- * @n1: first number
- * @n2: second number
- * @r: buffer that the function will use to store the result
- * @size_r: size of buffer
- * Return: pointer to result
- */
 char *infinite_add(char *n1, char *n2, char *r, int size_r)
 {
-	int sum, res, first, second, i = 0, plusOne = 0;
-	int len1 = _strlen(n1), len2 = _strlen(n2);
-	char *ptr = r;
+	int overflow = 0, i = 0, j = 0, digits = 0;
+	int val1 = 0, val2 = 0, temp_tot = 0;
 
-	while (len1 > 0 || len2 > 0)
-	{
-		first = len1 > 0 ? (*(n1 + len1 - 1) - '0') : 0;
-		second = len2 > 0 ? (*(n2 + len2 - 1) - '0') : 0;
-		sum = first + second;
-		res = returnRes(sum, plusOne);
-		plusOne = returnPlusOne(sum, plusOne);
-		*(ptr + i) = res + '0';
-		len1--;
-		len2--;
+	while (*(n1 + i) != '\0')
 		i++;
+	while (*(n2 + j) != '\0')
+		j++;
+	i--;
+	j--;
+	if (j >= size_r || i >= size_r)
+		return (0);
+	while (j >= 0 || i >= 0 || overflow == 1)
+	{
+		if (i < 0)
+			val1 = 0;
+		else
+			val1 = *(n1 + i) - '0';
+		if (j < 0)
+			val2 = 0;
+		else
+			val2 = *(n2 + j) - '0';
+		temp_tot = val1 + val2 + overflow;
+		if (temp_tot >= 10)
+			overflow = 1;
+		else
+			overflow = 0;
+		if (digits >= (size_r - 1))
+			return (0);
+		*(r + digits) = (temp_tot % 10) + '0';
+		digits++;
+		j--;
+		i--;
 	}
-	if (plusOne)
-		*(ptr + i) = 1 + '0';
-	ptr[++i] = '\0';
-	rev_string(ptr);
-	return ((size_r > _strlen(ptr)) ? ptr : 0);
+	if (digits == size_r)
+		return (0);
+	*(r + digits) = '\0';
+	rev_string(r);
+	return (r);
 }
