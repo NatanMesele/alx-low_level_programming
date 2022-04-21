@@ -1,77 +1,40 @@
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
 #include "lists.h"
+#include <string.h>
 
 /**
- * _strlen_recursion - return the length of a string
+ * add_node - Adds a new node at the beginning
+ *            of a list_t list.
+ * @head: A pointer to the head of the list_t list.
+ * @str: The string to be added to the list_t list.
  *
- * @s: char pointer
- *
- * Return: the length of a string
+ * Return: If the function fails - NULL.
+ *         Otherwise - the address of the new element.
  */
-int _strlen_recursion(const char *s)
+list_t *add_node(list_t **head, const char *str)
 {
-	if (*s != '\0')
-	{
-		return (_strlen_recursion(s + 1) + 1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-
-/**
- * createNode - create a new node
- *
- * @prmStr: name
- *
- * Return: new element
- */
-list_t *createNode(const char *prmStr)
-{
+	char *dup;
+	int len;
 	list_t *new;
 
 	new = malloc(sizeof(list_t));
 	if (new == NULL)
 		return (NULL);
 
-	if (prmStr == NULL)
-		return (NULL);
-
-	new->str = strdup(prmStr);
-	new->len = _strlen_recursion(prmStr);
-
-	return (new);
-}
-
-/**
- * add_node - adds a new node at the beginning of a list_t list
- *
- * @head: pointer to last element
- * @str: name
- *
- * Return: new last element
- */
-list_t *add_node(list_t **head, const char *str)
-{
-	list_t *new;
-
-	if (head == NULL)
-		return (NULL);
-
-	new = createNode(str);
-	if (new == NULL)
-		return (NULL);
-
-	if (*head == NULL)
-		*head = new;
-	else
+	dup = strdup(str);
+	if (dup == NULL)
 	{
-		new->next = *head;
-		*head = new;
+		free(new);
+		return (NULL);
 	}
+
+	for (len = 0; str[len];)
+		len++;
+
+	new->str = dup;
+	new->len = len;
+	new->next = *head;
+
+	*head = new;
 
 	return (new);
 }

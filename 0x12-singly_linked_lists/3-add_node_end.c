@@ -1,102 +1,49 @@
-#include <stddef.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
 #include "lists.h"
+#include <string.h>
 
 /**
- * _strlen_recursion - return the length of a string
+ * add_node_end - Adds a new node at the end
+ *                of a list_t list.
+ * @head: A pointer the head of the list_t list.
+ * @str: The string to be added to the list_t list.
  *
- * @s: char pointer
- *
- * Return: the length of a string
- */
-int _strlen_recursion(const char *s)
-{
-	if (*s != '\0')
-	{
-		return (_strlen_recursion(s + 1) + 1);
-	}
-	else
-	{
-		return (0);
-	}
-}
-
-/**
- * createNode - create a new node
- *
- * @prmStr: name
- *
- * Return: new element
- */
-list_t *createNode(const char *prmStr)
-{
-	list_t *new;
-
-	new = malloc(sizeof(list_t));
-	if (new == NULL)
-	{
-		return (NULL);
-	}
-
-	new->str = strdup(prmStr);
-	new->len = _strlen_recursion(prmStr);
-	new->next = NULL;
-
-	return (new);
-}
-
-/**
- * getLastNode - get last node
- *
- * @prmHeadNode: first node
- *
- * Return: last element
- */
-list_t *getLastNode(list_t *prmHeadNode)
-{
-	if (!prmHeadNode)
-		return (NULL);
-	if (prmHeadNode->next == NULL)
-		return (prmHeadNode);
-	else
-		return (getLastNode(prmHeadNode->next));
-}
-
-/**
- * add_node_end - add a new node
- *
- * @head: first element
- * @str: name
- *
- * Return: last element
+ * Return: If the function fails - NULL.
+ *         Otherwise - the address of the new element.
  */
 list_t *add_node_end(list_t **head, const char *str)
 {
+	char *dup;
+	int len;
 	list_t *new, *last;
 
-	if (head == NULL)
-		return (NULL);
-
-	new = createNode(str);
+	new = malloc(sizeof(list_t));
 	if (new == NULL)
 		return (NULL);
 
-	if (*head == NULL)
+	dup = strdup(str);
+	if (str == NULL)
 	{
-		*head = new;
+		free(new);
+		return (NULL);
 	}
+
+	for (len = 0; str[len];)
+		len++;
+
+	new->str = dup;
+	new->len = len;
+	new->next = NULL;
+
+	if (*head == NULL)
+		*head = new;
+
 	else
 	{
-		last = getLastNode(*head);
-		if (last == NULL)
-		{
-			printf("failed\n");
-			return (NULL);
-		}
+		last = *head;
+		while (last->next != NULL)
+			last = last->next;
 		last->next = new;
 	}
 
-	return (new);
+	return (*head);
 }

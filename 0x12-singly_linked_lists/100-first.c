@@ -1,14 +1,13 @@
 #include <stdio.h>
 
-void _construct(void) __attribute__((constructor));
+void __attribute__((constructor)) hare(void);
 
 /**
- * _construct - constructor function
+ * hare - Prints a string before the
+ *        main function is executed.
  */
-void _construct(void)
+void hare(void)
 {
-	char line1[] = "You're beat! and yet, you must allow,";
-	char line2[] = "I bore my house upon my back!";
-
-	printf("%s\n%s\n", line1, line2);
+	printf("You're beat! and yet, you must allow,\n"
+	       "I bore my house upon my back!\n");
 }
