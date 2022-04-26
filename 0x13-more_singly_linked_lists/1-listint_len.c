@@ -1,21 +1,18 @@
 #include "lists.h"
-#include <stdio.h>
-#include <stdlib.h>
 
 /**
- * print_listint - finds the number of the elements in the node
- * @h: head of a list.
+ * listint_len - the number of elements in a linked list_t list
  *
- * Return: numbers of nodes.
+ * @h: list to browse
+ *
+ * Return: size of the list
  */
 size_t listint_len(const listint_t *h)
 {
-	size_t nnodes = 0;
-
-	while (h != NULL)
-	{
-		h = h->next;
-		nnodes++;
-	}
-	return (nnodes);
+	if (h == NULL)
+		return (0);
+	if (h->next == NULL)
+		return (1);
+	else
+		return (listint_len(h->next) + 1);
 }
