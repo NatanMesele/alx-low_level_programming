@@ -1,88 +1,58 @@
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * listint_len - the number of elements in a linked list_t list
+ * delete_nodeint_at_index - deletes a node at an index
+ * @head: pointer to the head of the list
+ * @index: index of the node to be added
  *
- * @h: list to browse
- *
- * Return: size of the list
- */
-size_t listint_len(const listint_t *h)
-{
-	if (h == NULL)
-		return (0);
-	if (h->next == NULL)
-		return (1);
-	else
-		return (listint_len(h->next) + 1);
-}
-
-/**
- * get_nodeint_at_index - the nth node of a listint_t linked list
- *
- * @head: first element
- * @index: element's number
- *
- * Return: a node
- */
-listint_t *get_nodeint_at_index(listint_t *head, unsigned int index)
-{
-	unsigned int cLoop = 0;
-
-	while (head != NULL)
-	{
-		if (index == cLoop)
-			return (head);
-		head = head->next;
-		cLoop++;
-	}
-
-	return (NULL);
-}
-
-/**
- * delete_nodeint_at_index - deletes the node at index index of a listint_t
- *			     linked list
- *
- * @head: first element
- * @index: element's number
- *
- * Return: error code
+ * Return: the address of the node
  */
 int delete_nodeint_at_index(listint_t **head, unsigned int index)
 {
-	listint_t *before, *after, *current, *first;
-	int length;
+	listint_t *old_node = NULL;
+	listint_t *previous_node = NULL;
+	unsigned int i = 0, list_len = listint_len(*head);
 
-	first = *head;
-
-	if (first == NULL)
+	if ((index > list_len) || (list_len == 0))
 		return (-1);
-
-	length = listint_len(*head);
-
-	if (length == 0 || index > (unsigned int) length - 1)
+	while (head != NULL)
 	{
-		return (-1);
+		if (i == index)
+		{
+			old_node = *head;
+			if (i == 0)
+			{
+				*head = old_node->next;
+				free(old_node);
+				return (1);
+			}
+			previous_node->next = old_node->next;
+			free(old_node);
+			return (1);
+		}
+		else if ((i + 1) == index)
+			previous_node = *head;
+		head = &((*head)->next);
+		i++;
 	}
+	return (-1);
+}
 
-	if (index == 0)
+/**
+ * listint_len - counts the number of nodes in a linked list
+ * @h: head of the list
+ *
+ * Return: the number of elements
+ */
+size_t listint_len(const listint_t *h)
+{
+	const listint_t *cursor = h;
+	size_t count = 0;
+
+	while (cursor != NULL)
 	{
-		*head = (*head)->next;
-		free(first);
-		return (1);
+		count += 1;
+		cursor = cursor->next;
 	}
-
-	before = get_nodeint_at_index(first, index - 1);
-	if (index == (unsigned int) length - 1)
-		after = NULL;
-	else
-		after = get_nodeint_at_index(first, index + 1);
-
-	current = get_nodeint_at_index(first, index);
-	before->next = after;
-	free(current);
-
-	return (1);
+	return (count);
 }

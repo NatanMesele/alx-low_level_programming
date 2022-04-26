@@ -1,52 +1,26 @@
 #include "lists.h"
-#include <stdlib.h>
 
 /**
- * createNode - create a new node
+ * add_nodeint - adds a node to the beginning of a linked list
+ * @head: pointer to the head of the list
+ * @n: integer to be used as content
  *
- * @prmNbr: number
- *
- * Return: new element
- */
-listint_t *createNode(const int prmNbr)
-{
-	listint_t *new;
-
-	new = malloc(sizeof(listint_t));
-	if (new == NULL)
-		return (NULL);
-
-	new->n = prmNbr;
-
-	return (new);
-}
-
-/**
- * add_nodeint - adds a new node at the beginning of a list_t list
- *
- * @head: pointer to last element
- * @n: number
- *
- * Return: new last element
+ * Return: address of the newly added node
  */
 listint_t *add_nodeint(listint_t **head, const int n)
 {
-	listint_t *new;
+	listint_t *new_node;
 
-	if (head == NULL)
-		return (NULL);
-
-	new = createNode(n);
-	if (new == NULL)
-		return (NULL);
-
-	if (*head == NULL)
-		*head = new;
-	else
+	new_node = malloc(sizeof(listint_t));
+	if (new_node != NULL)
 	{
-		new->next = *head;
-		*head = new;
+		new_node->n = n;
+		new_node->next = *head;
 	}
-
-	return (new);
+	else
+		return (NULL);
+	if (*head != NULL)
+		new_node->next = *head;
+	*head = new_node;
+	return (new_node);
 }

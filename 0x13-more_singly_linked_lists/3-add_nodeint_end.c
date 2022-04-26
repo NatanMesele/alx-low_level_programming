@@ -1,80 +1,32 @@
 #include "lists.h"
-#include <stdlib.h>
-#include <stdio.h>
 
 /**
- * createNode - create a new node
+ * add_nodeint_end - adds a node to the end of a linked list
+ * @head: pointer to the head of the list
+ * @n: number to be used as content
  *
- * @prmNbr: name
- *
- * Return: new element
- */
-listint_t *createNode(const int prmNbr)
-{
-	listint_t *new;
-
-	new = malloc(sizeof(listint_t));
-	if (new == NULL)
-	{
-		return (NULL);
-	}
-
-	new->n = prmNbr;
-	new->next = NULL;
-
-	return (new);
-}
-
-/**
- * getLastNode - get last node
- *
- * @prmHeadNode: first node
- *
- * Return: last element
- */
-listint_t *getLastNode(listint_t *prmHeadNode)
-{
-	if (!prmHeadNode)
-		return (NULL);
-	if (prmHeadNode->next == NULL)
-		return (prmHeadNode);
-	else
-		return (getLastNode(prmHeadNode->next));
-}
-
-/**
- * add_nodeint_end - adds a new node at the end of a listint_t list
- *
- * @head: first element
- * @n: number
- *
- * Return: new node
+ * Return: address of the newly added node
  */
 listint_t *add_nodeint_end(listint_t **head, const int n)
 {
-	listint_t *new, *last;
+	listint_t *new_node;
+	listint_t *cursor = *head;
 
-	if (head == NULL)
-		return (NULL);
-
-	new = createNode(n);
-	if (new == NULL)
-		return (NULL);
-
-	if (*head == NULL)
+	new_node = malloc(sizeof(listint_t));
+	if (new_node != NULL)
 	{
-		*head = new;
+		new_node->n = n;
+		new_node->next = NULL;
 	}
 	else
+		return (NULL);
+	if (cursor != NULL)
 	{
-		last = getLastNode(*head);
-		if (last == NULL)
-		{
-			printf("failed\n");
-			return (NULL);
-		}
-		last->next = new;
+		while (cursor->next != NULL)
+			cursor = cursor->next;
+		cursor->next = new_node;
 	}
-
-	return (new);
+	else
+		*head = new_node;
+	return (new_node);
 }

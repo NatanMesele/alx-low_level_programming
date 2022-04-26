@@ -1,38 +1,26 @@
-#include <stdlib.h>
 #include "lists.h"
 
 /**
- * free_listint - free a struct linked list
+ *free_listint2 - frees a linked list
+ *@head: pointer to the head of the list
  *
- * @head: first element
- *
- * Return: frees a list_t list
+ *Return: void
  */
-void free_listint(listint_t *head)
-{
-	if (head == NULL)
-	{
-		return;
-	}
-	free_listint(head->next);
-	free(head);
-}
 
-/**
- * free_listint2 - free a struct linked list
- *
- * @head: first element
- */
 void free_listint2(listint_t **head)
 {
-	listint_t *new;
+	listint_t *cursor;
+	listint_t **temp = head;
 
-	if (head == NULL)
+	if (temp != NULL)
 	{
-		return;
-	}
+		while (*head != NULL)
+		{
+			cursor = *head;
+			free(cursor);
+			*head = (*head)->next;
+		}
 
-	new = *head;
-	*head = NULL;
-	free_listint(new);
+		*temp = NULL;
+	}
 }
